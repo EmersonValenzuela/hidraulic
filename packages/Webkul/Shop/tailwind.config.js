@@ -34,11 +34,16 @@ module.exports = {
                 darkGreen: '#40994A',
                 darkBlue: '#0044F2',
                 darkPink: '#F85156',
+                darkWine: '#26101c', //primary color
+                goldenOrange: '#FFAD19', //secondary color
+                fireOrange: '#FB7100'
             },
 
             fontFamily: {
                 poppins: ["Poppins", "sans-serif"],
                 dmserif: ["DM Serif Display", "serif"],
+                inter: ["Inter", "sans-serif"],
+                oswald: ["Oswald", "sans-serif"],
             },
         }
     },
