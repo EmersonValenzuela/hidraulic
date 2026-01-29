@@ -2,7 +2,7 @@
 
 <v-topbar>
     <!-- Shimmer Effect -->
-    <div class="flex items-center justify-between border border-b-0 border-l-0 border-r-0 border-t-0 px-16">
+    <div class="flex items-center justify-between bg-black border border-b-0 border-l-0 border-r-0 border-t-0 px-16 ">
         <!-- Currencies -->
         <div class="flex w-20 items-center justify-between gap-2.5 py-3">
             <div
@@ -16,13 +16,6 @@
                 role="presentation"
             >
             </div>
-        </div>
-
-        <!-- Offers -->
-        <div
-            class="shimmer h-6 w-72 rounded py-3"
-            role="presentation"
-        >
         </div>
 
         <!-- Locales -->
