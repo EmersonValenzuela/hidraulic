@@ -333,6 +333,10 @@ img.lazy {
         content: "\e942";
     }
 
+    .icon-whatsapp:before {
+        content: "\ea93";
+    }
+
     .journal-scroll::-webkit-scrollbar {
         width: 14px;
         cursor: pointer;

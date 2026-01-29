@@ -498,7 +498,7 @@ return [
                         'orders'        => 'Pedidos',
                         'profile'       => 'Perfil',
                         'search'        => 'Buscar',
-                        'search-text'   => 'Buscar productos aquí',
+                        'search-text'   => 'Buscar productos',
                         'sign-in'       => 'Iniciar sesión',
                         'sign-up'       => 'Registrarse',
                         'submit'        => 'Enviar',
@@ -966,7 +966,7 @@ return [
             ],
 
             'mini-cart' => [
-                'continue-to-checkout' => 'Continuar con el Pago',
+                'continue-to-checkout' => 'Continuar en Whatsapp',
                 'empty-cart'           => 'Tu carrito está vacío',
                 'excl-tax'             => 'Excl. Impuestos:',
                 'offer-on-orders'      => '¡Obtén hasta un 30% de DESCUENTO en tu primer pedido!',
