@@ -59,10 +59,6 @@
                         </p>
                     </div>
 
-                    <p class="text-base max-md:text-zinc-500 max-sm:text-xs">
-                        {{ core()->getConfigData('sales.checkout.mini_cart.offer_info')}}
-                    </p>
-
                     {!! view_render_event('bagisto.shop.checkout.mini-cart.drawer.header.after') !!}
                 </x-slot>
 
@@ -329,20 +325,16 @@
                         <div class="grid gap-2.5 px-6 max-md:px-4 max-sm:gap-1.5">
                             {!! view_render_event('bagisto.shop.checkout.mini-cart.continue_to_checkout.before') !!}
 
-                        <a
-                            href="{{ route('shop.checkout.onepage.index') }}"
-                            class="mx-auto block w-full cursor-pointer rounded-2xl bg-navyBlue px-11 py-4 text-center text-base font-medium text-white max-md:rounded-lg max-md:px-5 max-md:py-2"
+                        <button
+                            @click="sendToWhatsApp"
+                            type="button"
+                            class="mx-auto block w-full cursor-pointer rounded-2xl bg-fireOrange px-11 py-4 text-center text-base font-medium text-white max-md:rounded-lg max-md:px-5 max-md:py-2"
                         >
                             @lang('shop::app.checkout.cart.mini-cart.continue-to-checkout')
-                        </a>
+                        </button>
 
                             {!! view_render_event('bagisto.shop.checkout.mini-cart.continue_to_checkout.after') !!}
 
-                            <div class="block cursor-pointer text-center text-base font-medium max-md:py-1.5">
-                                <a href="{{ route('shop.checkout.cart.index') }}">
-                                    @lang('shop::app.checkout.cart.mini-cart.view-cart')
-                                </a>
-                            </div>
                         </div>
 
                         {!! view_render_event('bagisto.shop.checkout.mini-cart.action.after') !!}
@@ -391,6 +383,7 @@
                         prices: "{{ core()->getConfigData('sales.taxes.shopping_cart.display_prices') }}",
                         subtotal: "{{ core()->getConfigData('sales.taxes.shopping_cart.display_subtotal') }}",
                     },
+                    whatsappNumber: "51926730944",
                 }
             },
 
@@ -458,6 +451,39 @@
                             });
                         }
                     });
+                },
+                sendToWhatsApp() {
+                    if (!this.cart || !this.cart.items || this.cart.items.length === 0) {
+                        this.$emitter.emit('add-flash', {
+                            type: 'warning',
+                            message: 'El carrito está vacío'
+                        });
+                        return;
+                    }
+
+                    let message = '*Hola! Quiero realizar el siguiente pedido:*\n\n';
+
+                    this.cart.items.forEach((item, index) => {
+                        message += `${index + 1}. *${item.name}*\n`;
+                        message += `   Cantidad: ${item.quantity}\n`;
+                        message += `   Precio: ${item.formatted_price}\n`;
+
+                        if (item.options && item.options.length > 0) {
+                            item.options.forEach(option => {
+                                message +=
+                                `   - ${option.attribute_name}: ${option.option_label}\n`;
+                            });
+                        }
+                        message += '\n';
+                    });
+
+                    message += `*SUBTOTAL: ${this.cart.formatted_sub_total}*\n\n`;
+                    message += 'Podrian confirmar la disponibilidad y el total final con envio?';
+
+                    const encodedMessage = encodeURIComponent(message);
+                    const whatsappUrl = `https://wa.me/${this.whatsappNumber}?text=${encodedMessage}`;
+
+                    window.open(whatsappUrl, '_blank');
                 },
             },
         });

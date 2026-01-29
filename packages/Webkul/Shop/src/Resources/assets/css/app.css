@@ -333,6 +333,10 @@ img.lazy {
         content: "\e942";
     }
 
+    .icon-whatsapp:before {
+        content: "\ea93";
+    }
+
     .journal-scroll::-webkit-scrollbar {
         width: 14px;
         cursor: pointer;
@@ -529,5 +533,9 @@ img.lazy {
 
     .skip-to-main-content-link:focus {
         @apply ltr:left-1/2 rtl:right-1/2 ltr:translate-x-1/2 rtl:translate-x-[-50%] opacity-100;
+    }
+
+    header {
+        @apply bg-goldenOrange;
     }
 }
