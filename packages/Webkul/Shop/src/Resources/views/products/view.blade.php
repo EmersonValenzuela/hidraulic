@@ -431,7 +431,7 @@
                                             :title="trans('shop::app.products.view.buy-now')"
                                             :disabled="! $product->isSaleable(1)"
                                             ::loading="isStoring.buyNow"
-                                            @click="is_buy_now=1;"
+                                            @click="sendProductToWhatsApp"
                                             ::disabled="isStoring.buyNow"
                                         />
                                     @endif
@@ -489,6 +489,7 @@
 
                             buyNow: false,
                         },
+                        whatsappNumber: "51926730944",
                     }
                 },
 
@@ -679,6 +680,83 @@
                         if (! formData.has('quantity')) {
                             formData.append('quantity', 1);
                         }
+                    },
+
+                    sendProductToWhatsApp() {
+                        this.isStoring.buyNow = true;
+
+                        let formData = new FormData(this.$refs.formData);
+
+                        this.ensureQuantity(formData);
+
+                        let message = '*Hola! Quiero realizar el siguiente pedido:*\n\n';
+
+                        const productName = "{{ $product->name }}";
+                        message += `1. *${productName}*\n`;
+
+                        const quantity = formData.get('quantity') || 1;
+                        message += `   Cantidad: ${quantity}\n`;
+
+                        const price = "{{ $product->getTypeInstance()->getMinimalPrice() }}";
+                        const formattedPrice = new Intl.NumberFormat('es-PE', {
+                            style: 'currency',
+                            currency: 'PEN'
+                        }).format(price);
+                        message += `   Precio: ${formattedPrice}\n`;
+
+                        const options = this.getSelectedOptions(formData);
+                        if (options.length > 0) {
+                            message += '\n   *Opciones seleccionadas:*\n';
+                            options.forEach(option => {
+                                message += `   - ${option.label}: ${option.value}\n`;
+                            });
+                        }
+
+                        message += '\n';
+                        message += `*TOTAL: ${formattedPrice}*\n\n`;
+                        message += 'Podrían confirmar la disponibilidad y el total final con envío?';
+
+                        const encodedMessage = encodeURIComponent(message);
+                        const whatsappUrl = `https://wa.me/${this.whatsappNumber}?text=${encodedMessage}`;
+
+                        window.open(whatsappUrl, '_blank');
+
+                        this.isStoring.buyNow = false;
+                    },
+
+                    getSelectedOptions(formData) {
+                        const options = [];
+
+                        for (let [key, value] of formData.entries()) {
+                            if (key.startsWith('super_attribute[')) {
+                                const attributeId = key.match(/\[(\d+)\]/)[1];
+                                const optionElement = document.querySelector(`select[name="${key}"]`);
+
+                                if (optionElement) {
+                                    const label = optionElement.closest('.grid')?.querySelector('label')?.textContent?.trim() || 'Opción';
+                                    const selectedOption = optionElement.options[optionElement.selectedIndex];
+                                    const optionValue = selectedOption?.text || value;
+
+                                    options.push({
+                                        label: label,
+                                        value: optionValue
+                                    });
+                                }
+                            }
+
+                            if (key.startsWith('options[')) {
+                                const optionElement = document.querySelector(`[name="${key}"]`);
+                                if (optionElement) {
+                                    const label = optionElement.closest('.grid')?.querySelector('label')?.textContent?.trim() || 'Opción';
+                                    options.push({
+                                        label: label,
+                                        value: value
+                                    });
+                                }
+                            }
+                        }
+
+                        return options;
                     },
                 },
             });
