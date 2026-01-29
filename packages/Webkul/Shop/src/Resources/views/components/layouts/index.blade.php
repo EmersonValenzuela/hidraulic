@@ -39,8 +39,8 @@
             name="currency"
             content="{{ core()->getCurrentCurrency()->toJson() }}"
         >
-        <meta 
-            name="generator" 
+        <meta
+            name="generator"
             content="Bagisto"
         >
 
@@ -65,6 +65,13 @@
             href="https://fonts.gstatic.com"
             crossorigin
         />
+
+        <link
+            href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Oswald:wght@200..700&display=swap"
+            rel="stylesheet">
 
         <link
             rel="preload" as="style"
