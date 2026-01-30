@@ -63,6 +63,8 @@
                     {!! $data['html'] !!}
                 @endif
 
+                <script async src="https://www.tiktok.com/embed.js"></script>
+
                 @break
             @case ($customization::CATEGORY_CAROUSEL)
                 <!-- Categories carousel -->

@@ -30,17 +30,7 @@ class ThemeCustomizationRepository extends Repository
     {
         $locale = core()->getRequestedLocaleCode();
 
-        if ($data['type'] == 'static_content') {
-            $config = [
-                'HTML.Allowed'           => null,
-                'HTML.ForbiddenElements' => 'script,iframe,form',
-                'CSS.AllowedProperties'  => null,
-            ];
 
-            $data[$locale]['options']['html'] = Purify::config($config)->clean($data[$locale]['options']['html']);
-
-            $data[$locale]['options']['css'] = Purify::config($config)->clean($data[$locale]['options']['css']);
-        }
 
         if (in_array($data['type'], ['image_carousel', 'services_content'])) {
             unset($data[$locale]['options']);
