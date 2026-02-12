@@ -67,15 +67,19 @@
         />
 
         <link
-            href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+            rel="preload"
+            as="style"
+            href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap"
+        />
 
         <link
-            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Oswald:wght@200..700&display=swap"
-            rel="stylesheet">
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap"
+        />
 
         <link
-            rel="preload" as="style"
-            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap"
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         />
 
         <link

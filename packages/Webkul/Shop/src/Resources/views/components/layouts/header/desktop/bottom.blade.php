@@ -1,6 +1,6 @@
 {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.before') !!}
 
-<div class="flex min-h-[78px] w-full justify-between border border-b border-l-0 border-r-0 border-t-0 px-[60px] max-1180:px-8">
+<div class="flex min-h-[78px] w-full justify-between border border-b border-l-0 border-r-0 border-t-0 px-[60px] max-1180:px-8 shadow-[4px_4px_6px_-1px_rgba(0,0,0,0.1)]" >
     <!--
         This section will provide categories for the first, second, and third levels. If
         additional levels are required, users can customize them according to their needs.
@@ -162,7 +162,7 @@
             v-else-if="'{{ core()->getConfigData('general.design.categories.category_view') }}' !== 'sidebar'"
         >
             <div
-                class="group relative flex h-[77px] items-center border-b-4 border-transparent hover:border-b-4 hover:border-darkWine font-medium"
+                class="group relative flex h-[77px] items-center border-b-2 border-transparent hover:border-b-4 hover:border-darkWine font-medium text-lg"
                 v-for="category in categories"
             >
                 <span>
@@ -175,7 +175,7 @@
                 </span>
 
                 <div
-                    class="pointer-events-none absolute top-[78px] z-[1] max-h-[580px] w-max max-w-[1260px] translate-y-1 overflow-auto overflow-x-auto border border-b-0 border-l-0 border-r-0 border-t border-[#F3F3F3] bg-white p-9 opacity-0 shadow-[0_6px_6px_1px_rgba(0,0,0,.3)] transition duration-300 ease-out group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-hover:duration-200 group-hover:ease-in ltr:-left-9 rtl:-right-9"
+                    class="pointer-events-none absolute top-[78px] z-[1] max-h-[580px] w-max max-w-[1260px] translate-y-1 overflow-auto overflow-x-auto bg-goldenOrange p-9 opacity-0 shadow-[0_6px_6px_1px_rgba(0,0,0,.3)] transition duration-300 ease-out group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-hover:duration-200 group-hover:ease-in ltr:-left-9 rtl:-right-9"
                     v-if="category.children && category.children.length"
                 >
                     <div class="flex justify-between gap-x-[70px]">
@@ -184,7 +184,7 @@
                             v-for="pairCategoryChildren in pairCategoryChildren(category)"
                         >
                             <template v-for="secondLevelCategory in pairCategoryChildren">
-                                <p class="font-medium text-navyBlue">
+                                <p class="font-medium text-darkWine">
                                     <a :href="secondLevelCategory.url">
                                         @{{ secondLevelCategory.name }}
                                     </a>
