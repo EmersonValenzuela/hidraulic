@@ -381,7 +381,7 @@ img.lazy {
     }
 
     * {
-        @apply box-border font-oswald;
+        @apply box-border font-oswald border-transparent;
     }
 
     .scrollbar-hide::-webkit-scrollbar {
@@ -537,5 +537,6 @@ img.lazy {
 
     header {
         @apply bg-goldenOrange;
+        box-shadow: 4px 4px 6px -1px rgba(0, 0, 0, 0.5) !important;
     }
 }

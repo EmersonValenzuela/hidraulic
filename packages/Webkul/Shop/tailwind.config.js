@@ -39,11 +39,16 @@ module.exports = {
                 fireOrange: '#FB7100'
             },
 
+            borderColor:{
+                DEFAULT: 'transparent',
+            },
+
             fontFamily: {
                 poppins: ["Poppins", "sans-serif"],
                 dmserif: ["DM Serif Display", "serif"],
                 inter: ["Inter", "sans-serif"],
                 oswald: ["Oswald", "sans-serif"],
+                anton: ["Anton", "sans-serif"],
             },
         }
     },
