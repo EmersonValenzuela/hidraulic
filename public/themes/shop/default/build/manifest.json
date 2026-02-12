@@ -19,6 +19,10 @@
     "src": "src/Resources/assets/css/app.css",
     "isEntry": true
   },
+  "src/Resources/assets/fonts/bagisto-shop-old.woff": {
+    "file": "assets/bagisto-shop-old-4HxqAupJ.woff",
+    "src": "src/Resources/assets/fonts/bagisto-shop-old.woff"
+  },
   "src/Resources/assets/fonts/bagisto-shop.woff": {
     "file": "assets/bagisto-shop-BHAKyv0r.woff",
     "src": "src/Resources/assets/fonts/bagisto-shop.woff"
