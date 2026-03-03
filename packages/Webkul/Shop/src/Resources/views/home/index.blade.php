@@ -25,6 +25,51 @@
         <script>
             localStorage.setItem('categories', JSON.stringify(@json($categories)));
         </script>
+        <script>
+        const loadTikTok = (card) => {
+          if (card.dataset.loaded) return;
+          card.dataset.loaded = "1";
+
+          const id = card.dataset.videoId;
+          card.innerHTML = `
+            <iframe
+              src="https://www.tiktok.com/embed/${id}"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+            ></iframe>
+          `;
+        };
+
+        const initTikTok = () => {
+          const cards = document.querySelectorAll('.tiktok-auto');
+          if (!cards.length) return;
+
+          // primer video SIEMPRE
+          const first = document.querySelector('.tiktok-auto.first');
+          if (first) loadTikTok(first);
+
+          const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+              if (!entry.isIntersecting) return;
+              loadTikTok(entry.target);
+              obs.unobserve(entry.target);
+            });
+          }, {
+            rootMargin: '1000px', // 🔥 importante
+            threshold: 0
+          });
+
+          document.querySelectorAll('.tiktok-auto:not(.first)').forEach(card => {
+            observer.observe(card);
+          });
+        };
+
+        // ⏱️ esperar a que Bagisto termine de renderizar
+        window.addEventListener('load', () => {
+          setTimeout(initTikTok, 300); // 🔑 CLAVE
+        });
+        </script>
+
     @endif
 @endpush
 
@@ -62,8 +107,6 @@
                 @if (! empty($data['html']))
                     {!! $data['html'] !!}
                 @endif
-
-                <script async src="https://www.tiktok.com/embed.js"></script>
 
                 @break
             @case ($customization::CATEGORY_CAROUSEL)
