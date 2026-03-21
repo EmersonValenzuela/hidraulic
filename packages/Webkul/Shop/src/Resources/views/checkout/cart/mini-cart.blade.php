@@ -1,10 +1,6 @@
 <!-- Mini Cart Vue Component -->
 <v-mini-cart>
-    <span
-        class="icon-cart cursor-pointer text-2xl"
-        role="button"
-        aria-label="@lang('shop::app.checkout.cart.mini-cart.shopping-cart')"
-    ></span>
+    <span class="icon-cart cursor-pointer text-2xl" role="button" aria-label="@lang('shop::app.checkout.cart.mini-cart.shopping-cart')"></span>
 </v-mini-cart>
 
 @pushOnce('scripts')
@@ -325,13 +321,22 @@
                         <div class="grid gap-2.5 px-6 max-md:px-4 max-sm:gap-1.5">
                             {!! view_render_event('bagisto.shop.checkout.mini-cart.continue_to_checkout.before') !!}
 
-                        <button
-                            @click="sendToWhatsApp"
-                            type="button"
-                            class="mx-auto block w-full cursor-pointer rounded-2xl bg-fireOrange px-11 py-4 text-center text-base font-medium text-white max-md:rounded-lg max-md:px-5 max-md:py-2"
-                        >
-                            @lang('shop::app.checkout.cart.mini-cart.continue-to-checkout')
-                        </button>
+                          <div class="grid grid-cols-2 gap-3">
+                            <button
+                                v-for="whatsapp in whatsappNumbers"
+                                :key="whatsapp.number"
+                                @click="sendToWhatsApp(whatsapp.number)"
+                                type="button"
+                                class="flex items-center justify-center gap-2 rounded-2xl bg-green-600 px-4 py-3 text-white font-medium hover:bg-green-700 transition"
+                            >
+                                <!-- Icono WhatsApp -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 32 32" fill="currentColor">
+                                    <path d="M16.001 2.667c-7.363 0-13.334 5.97-13.334 13.333 0 2.353.616 4.648 1.787 6.676L2.667 29.333l6.812-1.756A13.266 13.266 0 0 0 16 29.333c7.363 0 13.334-5.97 13.334-13.333S23.364 2.667 16 2.667zm0 24c-2.08 0-4.108-.56-5.873-1.62l-.42-.25-4.045 1.043 1.08-3.95-.273-.405a10.65 10.65 0 0 1-1.63-5.485c0-5.89 4.79-10.667 10.667-10.667 5.877 0 10.667 4.777 10.667 10.667 0 5.89-4.79 10.667-10.667 10.667zm5.84-7.973c-.32-.16-1.893-.933-2.186-1.04-.293-.107-.507-.16-.72.16-.213.32-.826 1.04-1.013 1.253-.187.213-.373.24-.693.08-.32-.16-1.35-.497-2.573-1.585-.952-.848-1.594-1.893-1.78-2.213-.187-.32-.02-.493.14-.653.147-.146.32-.373.48-.56.16-.187.213-.32.32-.533.107-.213.053-.4-.027-.56-.08-.16-.72-1.733-.987-2.373-.26-.624-.52-.54-.72-.547-.187-.007-.4-.007-.613-.007-.213 0-.56.08-.853.4-.293.32-1.12 1.093-1.12 2.667 0 1.573 1.147 3.093 1.307 3.307.16.213 2.26 3.453 5.48 4.84.767.333 1.367.533 1.833.68.77.245 1.473.21 2.027.127.618-.092 1.893-.773 2.16-1.52.267-.747.267-1.387.187-1.52-.08-.133-.293-.213-.613-.373z"/>
+                                </svg>
+
+                                <span>@{{ whatsapp.label }}</span>
+                            </button>
+                        </div>
 
                             {!! view_render_event('bagisto.shop.checkout.mini-cart.continue_to_checkout.after') !!}
 
@@ -374,16 +379,25 @@
             template: '#v-mini-cart-template',
 
             data() {
-                return  {
+                return {
                     cart: null,
 
-                    isLoading:false,
+                    isLoading: false,
 
                     displayTax: {
                         prices: "{{ core()->getConfigData('sales.taxes.shopping_cart.display_prices') }}",
                         subtotal: "{{ core()->getConfigData('sales.taxes.shopping_cart.display_subtotal') }}",
                     },
-                    whatsappNumber: "51926730944",
+
+                    whatsappNumbers: [{
+                            number: "51905453270",
+                            label: "Asesor Ventas"
+                        },
+                        {
+                            number: "51965419305",
+                            label: "Asesor Técnico"
+                        }
+                    ],
                 }
             },
 
@@ -392,9 +406,6 @@
                     this.getCart();
                 }
 
-                /**
-                 * Action.
-                 */
                 this.$emitter.on('update-mini-cart', (cart) => {
                     this.cart = cart;
                 });
@@ -413,19 +424,24 @@
                     this.isLoading = true;
 
                     let qty = {};
-
                     qty[item.id] = quantity;
 
-                    this.$axios.put('{{ route('shop.api.checkout.cart.update') }}', { qty })
+                    this.$axios.put('{{ route('shop.api.checkout.cart.update') }}', {
+                            qty
+                        })
                         .then(response => {
                             if (response.data.message) {
                                 this.cart = response.data.data;
                             } else {
-                                this.$emitter.emit('add-flash', { type: 'warning', message: response.data.data.message });
+                                this.$emitter.emit('add-flash', {
+                                    type: 'warning',
+                                    message: response.data.data.message
+                                });
                             }
 
                             this.isLoading = false;
-                        }).catch(error => this.isLoading = false);
+                        })
+                        .catch(error => this.isLoading = false);
                 },
 
                 removeItem(itemId) {
@@ -434,25 +450,33 @@
                             this.isLoading = true;
 
                             this.$axios.post('{{ route('shop.api.checkout.cart.destroy') }}', {
-                                '_method': 'DELETE',
-                                'cart_item_id': itemId,
-                            })
-                            .then(response => {
-                                this.cart = response.data.data;
+                                    '_method': 'DELETE',
+                                    'cart_item_id': itemId,
+                                })
+                                .then(response => {
+                                    this.cart = response.data.data;
 
-                                this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
+                                    this.$emitter.emit('add-flash', {
+                                        type: 'success',
+                                        message: response.data.message
+                                    });
 
-                                this.isLoading = false;
-                            })
-                            .catch(error => {
-                                this.$emitter.emit('add-flash', { type: 'error', message: response.data.message });
+                                    this.isLoading = false;
+                                })
+                                .catch(error => {
+                                    this.$emitter.emit('add-flash', {
+                                        type: 'error',
+                                        message: response.data.message
+                                    });
 
-                                this.isLoading = false;
-                            });
+                                    this.isLoading = false;
+                                });
                         }
                     });
                 },
-                sendToWhatsApp() {
+
+                // 🔥 ENVÍO A WHATSAPP CON NÚMERO DINÁMICO
+                sendToWhatsApp(number) {
                     if (!this.cart || !this.cart.items || this.cart.items.length === 0) {
                         this.$emitter.emit('add-flash', {
                             type: 'warning',
@@ -471,21 +495,22 @@
                         if (item.options && item.options.length > 0) {
                             item.options.forEach(option => {
                                 message +=
-                                `   - ${option.attribute_name}: ${option.option_label}\n`;
+                                    `   - ${option.attribute_name}: ${option.option_label}\n`;
                             });
                         }
+
                         message += '\n';
                     });
 
                     message += `*SUBTOTAL: ${this.cart.formatted_sub_total}*\n\n`;
-                    message += 'Podrian confirmar la disponibilidad y el total final con envio?';
+                    message += 'Podrían confirmar disponibilidad y envío?';
 
                     const encodedMessage = encodeURIComponent(message);
-                    const whatsappUrl = `https://wa.me/${this.whatsappNumber}?text=${encodedMessage}`;
+                    const whatsappUrl = `https://wa.me/${number}?text=${encodedMessage}`;
 
                     window.open(whatsappUrl, '_blank');
-                },
-            },
+                }
+            }
         });
     </script>
 @endpushOnce
