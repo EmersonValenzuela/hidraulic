@@ -8,7 +8,7 @@
         $options = $options->map(function ($option) {
             $option->customizable_option_prices = $option->customizable_option_prices->map(function ($priceOption) {
                 $priceOption->price = core()->convertPrice($priceOption->price);
-                
+
                 return $priceOption;
             });
 

@@ -1,4 +1,4 @@
-@props(['count' => 0])
+    @props(['count' => 0])
 
 <div class="container mt-14 max-lg:px-8 max-md:mt-7 max-md:!px-0 max-sm:mt-5">
     <div class="relative">
