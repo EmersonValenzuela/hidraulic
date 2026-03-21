@@ -1,8 +1,4 @@
-<v-products-carousel
-    src="{{ $src }}"
-    title="{{ $title }}"
-    navigation-link="{{ $navigationLink ?? '' }}"
->
+<v-products-carousel src="{{ $src }}" title="{{ $title }}" navigation-link="{{ $navigationLink ?? '' }}">
     <x-shop::shimmer.products.carousel :navigation-link="$navigationLink ?? false" />
 </v-products-carousel>
 
@@ -15,8 +11,8 @@
             class="container mt-20 max-lg:px-8 max-md:mt-8 max-sm:mt-7 max-sm:!px-4"
             v-if="! isLoading && products.length"
         >
-            <div class="flex justify-between">
-                <h2 class="font-dmserif text-3xl max-md:text-2xl max-sm:text-xl">
+            <div class="relative flex items-center justify-end">
+                <h2 class="absolute left-1/2 -translate-x-1/2 font-Oswald text-darkWine text-3xl max-md:text-2xl max-sm:text-xl">
                     @{{ title }}
                 </h2>
 

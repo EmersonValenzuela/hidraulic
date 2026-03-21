@@ -171,9 +171,9 @@
             </x-slot>
 
             <x-slot:content class="max-sm:px-0">
-                <div class="mb-5 text-lg text-zinc-500 max-1180:text-sm max-md:mb-1 max-md:px-4">
-                    {!! $product->description !!}
-                </div>
+                <div class="prose prose-zinc max-w-none max-md:px-4">
+    {!! $product->description !!}
+</div>
             </x-slot>
         </x-shop::accordion>
 
