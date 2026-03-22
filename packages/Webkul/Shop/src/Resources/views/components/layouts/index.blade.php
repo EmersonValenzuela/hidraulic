@@ -71,6 +71,8 @@
         gtag('config', 'G-Q1S54CX2P5');
     </script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     {!! view_render_event('bagisto.shop.layout.head.after') !!}
 
 </head>

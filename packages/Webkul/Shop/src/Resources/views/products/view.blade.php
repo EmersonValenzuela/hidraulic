@@ -8,14 +8,15 @@
 
     $customAttributeValues = $productViewHelper->getAdditionalData($product);
 
-    $attributeData = collect($customAttributeValues)->filter(fn ($item) => ! empty($item['value']));
+    $attributeData = collect($customAttributeValues)->filter(fn($item) => !empty($item['value']));
 @endphp
 
 <!-- SEO Meta Content -->
 @push('meta')
-    <meta name="description" content="{{ trim($product->meta_description) != "" ? $product->meta_description : \Illuminate\Support\Str::limit(strip_tags($product->description), 120, '') }}"/>
+    <meta name="description"
+        content="{{ trim($product->meta_description) != '' ? $product->meta_description : \Illuminate\Support\Str::limit(strip_tags($product->description), 120, '') }}" />
 
-    <meta name="keywords" content="{{ $product->meta_keywords }}"/>
+    <meta name="keywords" content="{{ $product->meta_keywords }}" />
 
     @if (core()->getConfigData('catalog.rich_snippets.products.enable'))
         <script type="application/ld+json">
@@ -50,18 +51,15 @@
 <x-shop::layouts>
     <!-- Page Title -->
     <x-slot:title>
-        {{ trim($product->meta_title) != "" ? $product->meta_title : $product->name }}
+        {{ trim($product->meta_title) != '' ? $product->meta_title : $product->name }}
     </x-slot>
 
     {!! view_render_event('bagisto.shop.products.view.before', ['product' => $product]) !!}
 
     <!-- Breadcrumbs -->
-    @if ((core()->getConfigData('general.general.breadcrumbs.shop')))
+    @if (core()->getConfigData('general.general.breadcrumbs.shop'))
         <div class="flex justify-center px-7 max-lg:hidden">
-            <x-shop::breadcrumbs
-                name="product"
-                :entity="$product"
-            />
+            <x-shop::breadcrumbs name="product" :entity="$product" />
         </div>
     @endif
 
@@ -73,19 +71,12 @@
     <!-- Information Section -->
     <div class="1180:mt-20">
         <div class="max-1180:hidden">
-            <x-shop::tabs
-                position="center"
-                ref="productTabs"
-            >
+            <x-shop::tabs position="center" ref="productTabs">
                 <!-- Description Tab -->
                 {!! view_render_event('bagisto.shop.products.view.description.before', ['product' => $product]) !!}
 
-                <x-shop::tabs.item
-                    id="descritpion-tab"
-                    class="container mt-[60px] !p-0"
-                    :title="trans('shop::app.products.view.description')"
-                    :is-selected="true"
-                >
+                <x-shop::tabs.item id="descritpion-tab" class="container mt-[60px] !p-0" :title="trans('shop::app.products.view.description')"
+                    :is-selected="true">
                     <div class="container mt-[60px] max-1180:px-5">
                         <p class="text-lg text-zinc-500 max-1180:text-sm">
                             {!! $product->description !!}
@@ -96,17 +87,13 @@
                 {!! view_render_event('bagisto.shop.products.view.description.after', ['product' => $product]) !!}
 
                 <!-- Additional Information Tab -->
-                @if(count($attributeData))
-                    <x-shop::tabs.item
-                        id="information-tab"
-                        class="container mt-[60px] !p-0"
-                        :title="trans('shop::app.products.view.additional-information')"
-                        :is-selected="false"
-                    >
+                @if (count($attributeData))
+                    <x-shop::tabs.item id="information-tab" class="container mt-[60px] !p-0" :title="trans('shop::app.products.view.additional-information')"
+                        :is-selected="false">
                         <div class="container mt-[60px] max-1180:px-5">
                             <div class="mt-8 grid max-w-max grid-cols-[auto_1fr] gap-4">
                                 @foreach ($customAttributeValues as $customAttributeValue)
-                                    @if (! empty($customAttributeValue['value']))
+                                    @if (!empty($customAttributeValue['value']))
                                         <div class="grid">
                                             <p class="text-base text-black">
                                                 {!! $customAttributeValue['label'] !!}
@@ -114,21 +101,15 @@
                                         </div>
 
                                         @if ($customAttributeValue['type'] == 'file')
-                                            <a
-                                                href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
-                                                download="{{ $customAttributeValue['label'] }}"
-                                            >
+                                            <a href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
+                                                download="{{ $customAttributeValue['label'] }}">
                                                 <span class="text-2xl icon-download"></span>
                                             </a>
                                         @elseif ($customAttributeValue['type'] == 'image')
-                                            <a
-                                                href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
-                                                download="{{ $customAttributeValue['label'] }}"
-                                            >
-                                                <img
-                                                    class="w-5 h-5 min-h-5 min-w-5"
-                                                    src="{{ Storage::url($customAttributeValue['value']) }}"
-                                                />
+                                            <a href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
+                                                download="{{ $customAttributeValue['label'] }}">
+                                                <img class="w-5 h-5 min-h-5 min-w-5"
+                                                    src="{{ Storage::url($customAttributeValue['value']) }}" />
                                             </a>
                                         @else
                                             <div class="grid">
@@ -145,12 +126,7 @@
                 @endif
 
                 <!-- Reviews Tab -->
-                <x-shop::tabs.item
-                    id="review-tab"
-                    class="container mt-[60px] !p-0"
-                    :title="trans('shop::app.products.view.review')"
-                    :is-selected="false"
-                >
+                <x-shop::tabs.item id="review-tab" class="container mt-[60px] !p-0" :title="trans('shop::app.products.view.review')" :is-selected="false">
                     @include('shop::products.view.reviews')
                 </x-shop::tabs.item>
             </x-shop::tabs>
@@ -160,10 +136,7 @@
     <!-- Information Section -->
     <div class="container mt-6 grid gap-3 !p-0 max-1180:px-5 1180:hidden">
         <!-- Description Accordion -->
-        <x-shop::accordion
-            class="max-md:border-none"
-            :is-active="true"
-        >
+        <x-shop::accordion class="max-md:border-none" :is-active="true">
             <x-slot:header class="bg-gray-100 max-md:!py-3 max-sm:!py-2">
                 <p class="text-base font-medium 1180:hidden">
                     @lang('shop::app.products.view.description')
@@ -172,17 +145,14 @@
 
             <x-slot:content class="max-sm:px-0">
                 <div class="prose prose-zinc max-w-none max-md:px-4">
-    {!! $product->description !!}
-</div>
+                    {!! $product->description !!}
+                </div>
             </x-slot>
         </x-shop::accordion>
 
         <!-- Additional Information Accordion -->
         @if (count($attributeData))
-            <x-shop::accordion
-                class="max-md:border-none"
-                :is-active="false"
-            >
+            <x-shop::accordion class="max-md:border-none" :is-active="false">
                 <x-slot:header class="bg-gray-100 max-md:!py-3 max-sm:!py-2">
                     <p class="text-base font-medium 1180:hidden">
                         @lang('shop::app.products.view.additional-information')
@@ -193,40 +163,28 @@
                     <div class="container max-1180:px-5">
                         <div class="grid max-w-max grid-cols-[auto_1fr] gap-4 text-lg text-zinc-500 max-1180:text-sm">
                             @foreach ($customAttributeValues as $customAttributeValue)
-                                @if (! empty($customAttributeValue['value']))
+                                @if (!empty($customAttributeValue['value']))
                                     <div class="grid">
-                                        <p
-                                            class="text-base text-black"
-                                            v-pre
-                                        >
+                                        <p class="text-base text-black" v-pre>
                                             {{ $customAttributeValue['label'] }}
                                         </p>
                                     </div>
 
                                     @if ($customAttributeValue['type'] == 'file')
-                                        <a
-                                            href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
-                                            download="{{ $customAttributeValue['label'] }}"
-                                        >
+                                        <a href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
+                                            download="{{ $customAttributeValue['label'] }}">
                                             <span class="text-2xl icon-download"></span>
                                         </a>
                                     @elseif ($customAttributeValue['type'] == 'image')
-                                        <a
-                                            href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
-                                            download="{{ $customAttributeValue['label'] }}"
-                                        >
-                                            <img
-                                                class="w-5 h-5 min-h-5 min-w-5"
+                                        <a href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
+                                            download="{{ $customAttributeValue['label'] }}">
+                                            <img class="w-5 h-5 min-h-5 min-w-5"
                                                 src="{{ Storage::url($customAttributeValue['value']) }}"
-                                                alt="Product Image"
-                                            />
+                                                alt="Product Image" />
                                         </a>
                                     @else
                                         <div class="grid">
-                                            <p
-                                                class="text-base text-zinc-500"
-                                                v-pre
-                                            >
+                                            <p class="text-base text-zinc-500" v-pre>
                                                 {{ $customAttributeValue['value'] ?? '-' }}
                                             </p>
                                         </div>
@@ -240,14 +198,8 @@
         @endif
 
         <!-- Reviews Accordion -->
-        <x-shop::accordion
-            class="max-md:border-none"
-            :is-active="false"
-        >
-            <x-slot:header
-                class="bg-gray-100 max-md:!py-3 max-sm:!py-2"
-                id="review-accordian-button"
-            >
+        <x-shop::accordion class="max-md:border-none" :is-active="false">
+            <x-slot:header class="bg-gray-100 max-md:!py-3 max-sm:!py-2" id="review-accordian-button">
                 <p class="text-base font-medium">
                     @lang('shop::app.products.view.review')
                 </p>
@@ -424,16 +376,29 @@
                                     {!! view_render_event('bagisto.shop.products.view.buy_now.before', ['product' => $product]) !!}
 
                                     @if (core()->getConfigData('catalog.products.storefront.buy_now_button_display'))
-                                        <x-shop::button
-                                            type="submit"
-                                            class="primary-button mt-5 w-full max-w-[470px] max-md:py-3 max-sm:mt-3 max-sm:rounded-lg max-sm:py-1.5"
-                                            button-type="primary-button"
-                                            :title="trans('shop::app.products.view.buy-now')"
-                                            :disabled="! $product->isSaleable(1)"
-                                            ::loading="isStoring.buyNow"
-                                            @click="sendProductToWhatsApp"
-                                            ::disabled="isStoring.buyNow"
-                                        />
+                                      <div class="mt-5 flex gap-3 w-full max-w-[470px]">
+
+                                        <!-- Área Comercial -->
+                                        <button
+                                            type="button"
+                                            class="flex items-center justify-center gap-2 bg-green-500 text-white px-4 py-3 rounded-lg w-1/2 hover:bg-green-600 transition"
+                                            @click="sendProductToWhatsApp('comercial')"
+                                        >
+                                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                                            Asesor Ventas
+                                        </button>
+
+                                        <!-- Área Técnica -->
+                                        <button
+                                            type="button"
+                                            class="flex items-center justify-center gap-2 bg-green-700 text-white px-4 py-3 rounded-lg w-1/2 hover:bg-green-800 transition"
+                                            @click="sendProductToWhatsApp('tecnico')"
+                                        >
+                                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                                            Asesor Técnico
+                                        </button>
+
+                                    </div>
                                     @endif
 
                                     {!! view_render_event('bagisto.shop.products.view.buy_now.after', ['product' => $product]) !!}
@@ -489,7 +454,10 @@
 
                             buyNow: false,
                         },
-                        whatsappNumber: "51926730944",
+                        whatsappNumbers: {
+                            comercial: "51905453270",
+                            tecnico: "51965419305"
+                        }
                     }
                 },
 
@@ -507,7 +475,7 @@
 
                         this.ensureQuantity(formData);
 
-                        this.$axios.post('{{ route("shop.api.checkout.cart.store") }}', formData, {
+                        this.$axios.post('{{ route('shop.api.checkout.cart.store') }}', formData, {
                                 headers: {
                                     'Content-Type': 'multipart/form-data'
                                 }
@@ -516,13 +484,19 @@
                                 if (response.data.message) {
                                     this.$emitter.emit('update-mini-cart', response.data.data);
 
-                                    this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
+                                    this.$emitter.emit('add-flash', {
+                                        type: 'success',
+                                        message: response.data.message
+                                    });
 
                                     if (response.data.redirect) {
-                                        window.location.href= response.data.redirect;
+                                        window.location.href = response.data.redirect;
                                     }
                                 } else {
-                                    this.$emitter.emit('add-flash', { type: 'warning', message: response.data.data.message });
+                                    this.$emitter.emit('add-flash', {
+                                        type: 'warning',
+                                        message: response.data.data.message
+                                    });
                                 }
 
                                 this.isStoring[operation] = false;
@@ -530,7 +504,10 @@
                             .catch(error => {
                                 this.isStoring[operation] = false;
 
-                                this.$emitter.emit('add-flash', { type: 'warning', message: error.response.data.message });
+                                this.$emitter.emit('add-flash', {
+                                    type: 'warning',
+                                    message: error.response.data.message
+                                });
                             });
                     },
 
@@ -549,7 +526,8 @@
                                 .then(response => {
                                     const wishlistItems = response.data.data || [];
 
-                                    this.isWishlist = Boolean(wishlistItems.find(item => item.product.id == "{{ $product->id }}")?.product?.is_wishlist);
+                                    this.isWishlist = Boolean(wishlistItems.find(item => item.product.id ==
+                                        "{{ $product->id }}")?.product?.is_wishlist);
                                 })
                                 .catch(error => {});
                         }
@@ -561,13 +539,16 @@
                                     product_id: "{{ $product->id }}"
                                 })
                                 .then(response => {
-                                    this.isWishlist = ! this.isWishlist;
+                                    this.isWishlist = !this.isWishlist;
 
-                                    this.$emitter.emit('add-flash', { type: 'success', message: response.data.data.message });
+                                    this.$emitter.emit('add-flash', {
+                                        type: 'success',
+                                        message: response.data.data.message
+                                    });
                                 })
                                 .catch(error => {});
                         } else {
-                            window.location.href = "{{ route('shop.customer.session.index')}}";
+                            window.location.href = "{{ route('shop.customer.session.index') }}";
                         }
                     },
 
@@ -576,20 +557,29 @@
                          * This will handle for customers.
                          */
                         if (this.isCustomer) {
-                            this.$axios.post('{{ route("shop.api.compare.store") }}', {
+                            this.$axios.post('{{ route('shop.api.compare.store') }}', {
                                     'product_id': productId
                                 })
                                 .then(response => {
-                                    this.$emitter.emit('add-flash', { type: 'success', message: response.data.data.message });
+                                    this.$emitter.emit('add-flash', {
+                                        type: 'success',
+                                        message: response.data.data.message
+                                    });
                                 })
                                 .catch(error => {
                                     if ([400, 422].includes(error.response.status)) {
-                                        this.$emitter.emit('add-flash', { type: 'warning', message: error.response.data.data.message });
+                                        this.$emitter.emit('add-flash', {
+                                            type: 'warning',
+                                            message: error.response.data.data.message
+                                        });
 
                                         return;
                                     }
 
-                                    this.$emitter.emit('add-flash', { type: 'error', message: error.response.data.message});
+                                    this.$emitter.emit('add-flash', {
+                                        type: 'error',
+                                        message: error.response.data.message
+                                    });
                                 });
 
                             return;
@@ -601,19 +591,28 @@
                         let existingItems = this.getStorageValue(this.getCompareItemsStorageKey()) ?? [];
 
                         if (existingItems.length) {
-                            if (! existingItems.includes(productId)) {
+                            if (!existingItems.includes(productId)) {
                                 existingItems.push(productId);
 
                                 this.setStorageValue(this.getCompareItemsStorageKey(), existingItems);
 
-                                this.$emitter.emit('add-flash', { type: 'success', message: "@lang('shop::app.products.view.add-to-compare')" });
+                                this.$emitter.emit('add-flash', {
+                                    type: 'success',
+                                    message: "@lang('shop::app.products.view.add-to-compare')"
+                                });
                             } else {
-                                this.$emitter.emit('add-flash', { type: 'warning', message: "@lang('shop::app.products.view.already-in-compare')" });
+                                this.$emitter.emit('add-flash', {
+                                    type: 'warning',
+                                    message: "@lang('shop::app.products.view.already-in-compare')"
+                                });
                             }
                         } else {
                             this.setStorageValue(this.getCompareItemsStorageKey(), [productId]);
 
-                            this.$emitter.emit('add-flash', { type: 'success', message: "@lang('shop::app.products.view.add-to-compare')" });
+                            this.$emitter.emit('add-flash', {
+                                type: 'success',
+                                message: "@lang('shop::app.products.view.add-to-compare')"
+                            });
                         }
                     },
 
@@ -624,12 +623,17 @@
 
                         qty[id] = quantity;
 
-                        this.$axios.put('{{ route('shop.api.checkout.cart.update') }}', { qty })
+                        this.$axios.put('{{ route('shop.api.checkout.cart.update') }}', {
+                                qty
+                            })
                             .then(response => {
                                 if (response.data.message) {
                                     this.cart = response.data.data;
                                 } else {
-                                    this.$emitter.emit('add-flash', { type: 'warning', message: response.data.data.message });
+                                    this.$emitter.emit('add-flash', {
+                                        type: 'warning',
+                                        message: response.data.data.message
+                                    });
                                 }
 
                                 this.isLoading = false;
@@ -677,14 +681,12 @@
                     },
 
                     ensureQuantity(formData) {
-                        if (! formData.has('quantity')) {
+                        if (!formData.has('quantity')) {
                             formData.append('quantity', 1);
                         }
                     },
 
-                    sendProductToWhatsApp() {
-                        this.isStoring.buyNow = true;
-
+                    sendProductToWhatsApp(type) {
                         let formData = new FormData(this.$refs.formData);
 
                         this.ensureQuantity(formData);
@@ -702,6 +704,7 @@
                             style: 'currency',
                             currency: 'PEN'
                         }).format(price);
+
                         message += `   Precio: ${formattedPrice}\n`;
 
                         const options = this.getSelectedOptions(formData);
@@ -714,14 +717,17 @@
 
                         message += '\n';
                         message += `*TOTAL: ${formattedPrice}*\n\n`;
-                        message += 'Podrían confirmar la disponibilidad y el total final con envío?';
+                        message += 'Podrían confirmar la disponibilidad y el total final?';
 
                         const encodedMessage = encodeURIComponent(message);
-                        const whatsappUrl = `https://wa.me/${this.whatsappNumber}?text=${encodedMessage}`;
+
+                        const number = type === 'tecnico' ?
+                            this.whatsappNumbers.tecnico :
+                            this.whatsappNumbers.comercial;
+
+                        const whatsappUrl = `https://wa.me/${number}?text=${encodedMessage}`;
 
                         window.open(whatsappUrl, '_blank');
-
-                        this.isStoring.buyNow = false;
                     },
 
                     getSelectedOptions(formData) {
@@ -733,7 +739,8 @@
                                 const optionElement = document.querySelector(`select[name="${key}"]`);
 
                                 if (optionElement) {
-                                    const label = optionElement.closest('.grid')?.querySelector('label')?.textContent?.trim() || 'Opción';
+                                    const label = optionElement.closest('.grid')?.querySelector('label')?.textContent
+                                        ?.trim() || 'Opción';
                                     const selectedOption = optionElement.options[optionElement.selectedIndex];
                                     const optionValue = selectedOption?.text || value;
 
@@ -747,7 +754,8 @@
                             if (key.startsWith('options[')) {
                                 const optionElement = document.querySelector(`[name="${key}"]`);
                                 if (optionElement) {
-                                    const label = optionElement.closest('.grid')?.querySelector('label')?.textContent?.trim() || 'Opción';
+                                    const label = optionElement.closest('.grid')?.querySelector('label')?.textContent
+                                        ?.trim() || 'Opción';
                                     options.push({
                                         label: label,
                                         value: value
@@ -802,8 +810,9 @@
                                     observer.unobserve(entry.target); // Stop observing
                                 }
                             });
-                        },
-                        { threshold: 0.1 }
+                        }, {
+                            threshold: 0.1
+                        }
                     );
 
                     observer.observe(this.$refs.carouselWrapper);
