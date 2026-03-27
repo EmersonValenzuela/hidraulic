@@ -385,7 +385,7 @@
                                             @click="sendProductToWhatsApp('comercial')"
                                         >
                                             <i class="fa-brands fa-whatsapp text-xl"></i>
-                                            Asesor Ventas
+                                            Asesor Ventas 1
                                         </button>
 
                                         <!-- Área Técnica -->
@@ -395,7 +395,7 @@
                                             @click="sendProductToWhatsApp('tecnico')"
                                         >
                                             <i class="fa-brands fa-whatsapp text-xl"></i>
-                                            Asesor Técnico
+                                            Asesor Ventas 2     q
                                         </button>
 
                                     </div>

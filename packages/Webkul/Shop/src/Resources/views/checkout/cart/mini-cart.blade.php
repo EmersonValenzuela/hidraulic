@@ -391,11 +391,11 @@
 
                     whatsappNumbers: [{
                             number: "51905453270",
-                            label: "Asesor Ventas"
+                            label: "Asesor Ventas 1"
                         },
                         {
                             number: "51965419305",
-                            label: "Asesor Técnico"
+                            label: "Asesor Ventas 2"
                         }
                     ],
                 }
