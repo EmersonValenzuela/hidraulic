@@ -395,7 +395,7 @@
                                             @click="sendProductToWhatsApp('tecnico')"
                                         >
                                             <i class="fa-brands fa-whatsapp text-xl"></i>
-                                            Asesor Ventas 2     q
+                                            Asesor Ventas 2
                                         </button>
 
                                     </div>
